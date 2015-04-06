@@ -1,7 +1,7 @@
 #ifndef NPUZZLE_HPP
 # define NPUZZLE_HPP
 
-#include <Puzzle.hpp>
+// #include <Puzzle.hpp>
 
 class NPuzzle
 {
@@ -21,16 +21,22 @@ class NPuzzle
 		NPuzzle operator=( NPuzzle const & cpy );
 
 		/*
+		** GET & SET
+		*/
+		int		getSize( void ) const;
+
+
+		/*
 		** METHOD
 		*/
 
 
 	private:
 		int						size;
-		int						**puzzle_init;
-		int						**puzzle_end;
-		std::vector<Puzzle *>	puzzles;
-		Heuristic				*heuristic;
+		// int						**puzzle_init;
+		// int						**puzzle_end;
+		// std::vector<Puzzle *>	puzzles;
+		// Heuristic				*heuristic;
 
 };
 

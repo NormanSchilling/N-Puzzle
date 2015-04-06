@@ -36,5 +36,14 @@ NPuzzle		NPuzzle::operator=( NPuzzle const & cpy )
 }
 
 /*
+** GET & SET
+*/
+int			NPuzzle::getSize( void ) const
+{
+	return ( this->size );
+}
+
+
+/*
 ** METHOD
 */
