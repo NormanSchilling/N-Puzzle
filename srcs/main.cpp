@@ -4,6 +4,7 @@
 #include <string>
 #include <regex>
 #include <vector>
+#include <NPuzzle.hpp>
 
 static void				ft_usage( void )
 {
@@ -61,6 +62,7 @@ int				main( int argc, char *argv[] )
 	int								i = 0;
 	int								size = 0;
 	std::vector< std::vector<int> >	tab;
+	NPuzzle							*np;
 
 	if ( puzzle_file.is_open() )
 	{
@@ -77,6 +79,7 @@ int				main( int argc, char *argv[] )
 				tab.push_back( getArray(line) );
 		}
 		puzzle_file.close();
+		np = new NPuzzle( size, tab );
 	}
 	else
 		std::cout << "Unable to open file" << std::endl;

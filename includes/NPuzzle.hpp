@@ -2,6 +2,8 @@
 # define NPUZZLE_HPP
 
 // #include <Puzzle.hpp>
+#include <iostream>
+#include <vector>
 
 class NPuzzle
 {
@@ -11,7 +13,7 @@ class NPuzzle
 		** CONSTRUCT & DESTRUCT
 		*/
 		NPuzzle( void );
-		NPuzzle( int size );
+		NPuzzle( int size, std::vector< std::vector<int> > tab );
 		NPuzzle( NPuzzle const & cpy );
 		~NPuzzle( void );
 
@@ -24,17 +26,19 @@ class NPuzzle
 		** GET & SET
 		*/
 		int		getSize( void ) const;
+		std::vector< std::vector<int> >		getPuzzleInit( void ) const;
 
 
 		/*
 		** METHOD
 		*/
+		void	generateSolution( void );
 
 
 	private:
-		int						size;
-		// int						**puzzle_init;
-		// int						**puzzle_end;
+		int									size;
+		std::vector< std::vector<int> >		puzzle_init;
+		std::vector< std::vector<int> >		puzzle_end;
 		// std::vector<Puzzle *>	puzzles;
 		// Heuristic				*heuristic;
 
