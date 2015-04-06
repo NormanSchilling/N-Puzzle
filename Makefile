@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nschilli <nschilli@student.42.fr>          +#+  +:+       +#+         #
+#    By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/03/03 13:29:20 by dsousa            #+#    #+#              #
-#    Updated: 2015/04/03 15:18:59 by nschilli         ###   ########.fr        #
+#    Updated: 2015/04/06 17:12:02 by dsousa           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ INC			+=	-I includes
 INC_DIR		=	includes/
 
 INC_FILES	=	NPuzzle.hpp\
+				Puzzle.hpp\
 
 INC_SRC		=	$(addprefix $(INC_DIR), $(INC_FILES))
 
@@ -28,6 +29,7 @@ SRC_DIR		=	srcs/
 
 FILES		=	main.cpp\
 				NPuzzle.cpp\
+				Puzzle.cpp\
 
 SRC			=	$(addprefix $(SRC_DIR), $(FILES))
 

@@ -8,8 +8,9 @@ Puzzle::Puzzle( void ) : size( 3 )
 	return ;
 }
 
-Puzzle::Puzzle( int size ) : size( size )
+Puzzle::Puzzle( int size, std::vector< std::vector<int> > puzzle ) : size( size ), puzzle( puzzle )
 {
+	// this->weight = this->calculWeight();
 	return ;
 }
 

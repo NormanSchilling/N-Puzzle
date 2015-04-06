@@ -4,6 +4,7 @@
 // #include <Puzzle.hpp>
 #include <iostream>
 #include <vector>
+#include <Puzzle.hpp>
 
 class NPuzzle
 {
@@ -39,7 +40,8 @@ class NPuzzle
 		int									size;
 		std::vector< std::vector<int> >		puzzle_init;
 		std::vector< std::vector<int> >		puzzle_end;
-		// std::vector<Puzzle *>	puzzles;
+		std::vector<Puzzle *>				puzzles;
+		std::vector<Puzzle *>				sortPuzzles;
 		// Heuristic				*heuristic;
 
 };

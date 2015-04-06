@@ -24,6 +24,9 @@ NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab ) : size( size )
 	}
 
 	this->generateSolution( );
+	this->puzzles.push_back( new Puzzle( size, this->puzzle_init ) );
+	this->sortPuzzles.push_back( new Puzzle( size, this->puzzle_init ) );
+
 	return ;
 }
 
@@ -89,3 +92,4 @@ void									NPuzzle::generateSolution( void )
 	}
 	return ;
 }
+
