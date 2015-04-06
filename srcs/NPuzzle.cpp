@@ -1,8 +1,5 @@
 
 #include <NPuzzle.hpp>
-#include <iostream>
-#include <ctime>
-#include <unistd.h>
 
 /*
 ** CONSTRUCT & DESTRUCT
