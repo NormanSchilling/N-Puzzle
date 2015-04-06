@@ -6,7 +6,7 @@
 #    By: nschilli <nschilli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/03/03 13:29:20 by dsousa            #+#    #+#              #
-#    Updated: 2015/04/03 15:05:33 by nschilli         ###   ########.fr        #
+#    Updated: 2015/04/03 15:18:59 by nschilli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,13 +20,14 @@ INC			+=	-I includes
 
 INC_DIR		=	includes/
 
-INC_FILES	=	
+INC_FILES	=	NPuzzle.hpp\
 
 INC_SRC		=	$(addprefix $(INC_DIR), $(INC_FILES))
 
 SRC_DIR		=	srcs/
 
 FILES		=	main.cpp\
+				NPuzzle.cpp\
 
 SRC			=	$(addprefix $(SRC_DIR), $(FILES))
 
