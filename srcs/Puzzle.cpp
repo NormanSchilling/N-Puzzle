@@ -16,7 +16,9 @@ Puzzle::Puzzle( int size, std::vector< std::vector<int> > puzzle,  std::vector< 
 
 Puzzle::Puzzle( Puzzle const & cpy )
 {
-	*this = cpy;
+	this->weight = cpy.getWeight();
+	this->puzzle = cpy.getPuzzle();
+	this->rank = cpy.getRank();
 }
 
 Puzzle::~Puzzle( void )

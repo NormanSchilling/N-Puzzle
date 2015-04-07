@@ -67,24 +67,24 @@ std::vector< std::vector<int> >			NPuzzle::getPuzzleInit( void ) const
 */
 void									NPuzzle::aStar( void )
 {
-	int					tmp;
-	unsigned long		i = 0;
-	std::vector<Puzzle *>			tmpList;
+// 	int					tmp;
+// 	unsigned long		i = 0;
+	Puzzle *			tmpPuzzle;
 
-	tmp = this->sortPuzzles[0]->getWeight();
-	std::cout << "Search solution for the following state (weight = " << tmp << ") : " << std::endl;
-	while ( i < this->sortPuzzles.size() && this->sortPuzzles[i]->getWeight() == tmp )
-	{
-		tmpList.push_back( this->sortPuzzles[i] );
-		i++;
-	}
-	this->sortPuzzles.erase( this->sortPuzzles.begin(), this->sortPuzzles.begin() + i );
+	tmpPuzzle = this->sortPuzzles[0];
+	this->sortPuzzles.erase( this->sortPuzzles.begin() );
+	std::cout << "Search solution for the following state (weight = " << tmpPuzzle->getWeight() << ") : " << std::endl;
+	// while ( i < this->sortPuzzles.size() && this->sortPuzzles[i]->getWeight() == tmp )
+	// {
+	// 	tmpList.push_back( this->sortPuzzles[i] );
+	// 	i++;
+	// }
 
-	for ( size_t j = 0; j < tmpList.size(); ++j )
-	{
-		this->printStep( tmpList[j] );
-		this->findMove( tmpList[j] );
-	}
+	// for ( size_t j = 0; j < tmpList.size(); ++j )
+	// {
+		this->printStep( tmpPuzzle );
+		this->findMove( tmpPuzzle );
+	// }
 
 	this->aStar();
 }
@@ -132,24 +132,55 @@ void									NPuzzle::findMove( Puzzle *puzzle )
 	return ;
 }
 
+bool			NPuzzle::alreadyExist( Puzzle *puzzle )
+{
+	std::vector< std::vector<int> >		tmp = puzzle->getPuzzle();
+	unsigned long						x = 0;
+	unsigned long						y = 0;
+	unsigned long						size = static_cast<unsigned long>(this->size);
+
+	for (unsigned long index = 0; index < this->puzzles.size(); ++index)
+	{
+		x = 0;
+		y = 0;
+		while ( y < size && this->puzzles[index]->getPuzzle()[y][x] == tmp[y][x] )
+		{
+			x = 0;
+			while ( x < size && this->puzzles[index]->getPuzzle()[y][x] == tmp[y][x] )
+				x++;
+			y++;
+			if ( y == size && x == size )
+			{
+				return ( true );
+			}
+		}
+	}
+	return ( false );
+}
+
 void			NPuzzle::generateMove( Puzzle *puzzle, int y, int x, int y2, int x2 )
 {
 	std::vector< std::vector<int> >		src = puzzle->getPuzzle();
-	int				tmp;
-	unsigned long	index;
+	unsigned long	index = 0;
 	Puzzle			*step;
 
 	if ( x2 < 0 || x2 >= this->size || y2 < 0 || y2 >= this->size )
 		return ;
 
-	tmp = src[y][x];
 	src[y][x] = src[y2][x2];
-	src[y2][x2] = tmp;
+	src[y2][x2] = 0;
 	step = new Puzzle( this->size, src, this->puzzle_end, puzzle->getRank() + 1 );
+
 	if ( step->isSolution() )
 		this->end( puzzle, step );
+	if ( this->alreadyExist( step ) )
+	{
+		delete step;
+		return ;
+	}
 
-	index = 0;
+	this->puzzles.push_back( step );
+
 	while ( index < this->sortPuzzles.size() && step->getWeight() > this->sortPuzzles[index]->getWeight() )
 		index++;
 
@@ -157,12 +188,10 @@ void			NPuzzle::generateMove( Puzzle *puzzle, int y, int x, int y2, int x2 )
 		this->sortPuzzles.insert( this->sortPuzzles.begin() + index, step );
 	else
 		this->sortPuzzles.push_back( step );
-
-	this->puzzles.push_back( step );
 }
 
 
-void									NPuzzle::end(  Puzzle * src, Puzzle * solution )
+void									NPuzzle::end( Puzzle * src, Puzzle * solution )
 {
 	std::cout << "Solution found ! It's the next of this state : " << std::endl;
 	this->printStep( src );

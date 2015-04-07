@@ -48,6 +48,7 @@ class NPuzzle
 		void								generateMove( Puzzle *puzzle, int x, int y, int x2, int y2 );
 		void								findMove( Puzzle *puzzle );
 		void								printStep( Puzzle *puzzle );
+		bool								alreadyExist( Puzzle *puzzle );
 		// Heuristic				*heuristic;
 
 };
