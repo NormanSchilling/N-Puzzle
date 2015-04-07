@@ -12,7 +12,7 @@ class Puzzle
 		** CONSTRUCT & DESTRUCT
 		*/
 		Puzzle( void );
-		Puzzle( int size, std::vector< std::vector<int> > puzzle, std::vector< std::vector<int> > puzzle_end );
+		Puzzle( int size, std::vector< std::vector<int> > puzzle, std::vector< std::vector<int> > puzzle_end, int rank );
 		Puzzle( Puzzle const & cpy );
 		~Puzzle( void );
 

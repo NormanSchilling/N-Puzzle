@@ -8,10 +8,8 @@ Puzzle::Puzzle( void ) : size( 3 )
 	return ;
 }
 
-Puzzle::Puzzle( int size, std::vector< std::vector<int> > puzzle,  std::vector< std::vector<int> > puzzle_end ) : size( size ), rank(0), puzzle( puzzle ), puzzle_end( puzzle_end )
+Puzzle::Puzzle( int size, std::vector< std::vector<int> > puzzle,  std::vector< std::vector<int> > puzzle_end, int rank ) : size( size ), weight(rank), rank(rank), puzzle( puzzle ), puzzle_end( puzzle_end )
 {
-	this->weight = 0;
-	// std::cout << this->size << std::endl;
 	this->calculWeight();
 	return ;
 }
@@ -47,7 +45,6 @@ void	Puzzle::calculWeight()
 				this->weight++;
 		}
 	}
-	std::cout << this->weight << std::endl;
 }
 
 bool	Puzzle::isSolution( void )
