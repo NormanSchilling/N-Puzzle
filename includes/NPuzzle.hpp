@@ -34,6 +34,9 @@ class NPuzzle
 		** METHOD
 		*/
 		void	generateSolution( void );
+		void	aStar( void );
+		void	end( void );
+		void	findMove( Puzzle *puzzle );
 
 
 	private:
@@ -42,6 +45,8 @@ class NPuzzle
 		std::vector< std::vector<int> >		puzzle_end;
 		std::vector<Puzzle *>				puzzles;
 		std::vector<Puzzle *>				sortPuzzles;
+
+		void								generateMove( std::vector< std::vector<int> > src, int x, int y, int x2, int y2 );
 		// Heuristic				*heuristic;
 
 };

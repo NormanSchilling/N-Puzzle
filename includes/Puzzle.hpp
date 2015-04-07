@@ -1,6 +1,7 @@
 #ifndef PUZZLE_HPP
 # define PUZZLE_HPP
 
+#include <iostream>
 #include <vector>
 
 class Puzzle
@@ -11,7 +12,7 @@ class Puzzle
 		** CONSTRUCT & DESTRUCT
 		*/
 		Puzzle( void );
-		Puzzle( int size, std::vector< std::vector<int> > puzzle );
+		Puzzle( int size, std::vector< std::vector<int> > puzzle, std::vector< std::vector<int> > puzzle_end );
 		Puzzle( Puzzle const & cpy );
 		~Puzzle( void );
 
@@ -23,19 +24,23 @@ class Puzzle
 		/*
 		** METHOD
 		*/
-		// void	calculWeight();
+		void	calculWeight();
 
 		/*
 		** GETTER
 		*/
-		int		getWeight( void ) const;
+		int									getWeight( void ) const;
+		std::vector< std::vector<int> >		getPuzzle( void ) const;
+		int									getRank( void ) const;
+		bool								isSolution( void );
+
 
 	private:
 		int									size;
 		int									weight;
 		int									rank;
-		int									state;
 		std::vector< std::vector<int> >		puzzle;
+		std::vector< std::vector<int> >		puzzle_end;
 
 };
 
