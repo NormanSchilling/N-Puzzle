@@ -170,7 +170,7 @@ void									NPuzzle::generateSolution( void )
 
 	while ( i < this->size * this->size )
 	{
-		while ( this->puzzle_end[y][x] == 0 && x < this->size && y < this->size && x >= 0 && y >= 0 )
+		while ( x < this->size && y < this->size && x >= 0 && y >= 0 && this->puzzle_end[y][x] == 0 )
 		{
 			this->puzzle_end[y][x] = i++;
 			x += inc_x;
@@ -184,6 +184,7 @@ void									NPuzzle::generateSolution( void )
 		x += inc_x;
 		y += inc_y;
 	}
+
 	return ;
 }
 
