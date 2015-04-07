@@ -24,8 +24,8 @@ NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab ) : size( size )
 	}
 
 	this->generateSolution( );
-	this->puzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end ) );
-	this->sortPuzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end ) );
+	this->puzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0 ) );
+	this->sortPuzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0 ) );
 
 	this->aStar();
 	return ;
@@ -65,7 +65,6 @@ std::vector< std::vector<int> >			NPuzzle::getPuzzleInit( void ) const
 /*
 ** METHOD
 */
-
 void									NPuzzle::aStar( void )
 {
 	int					tmp;
@@ -73,6 +72,7 @@ void									NPuzzle::aStar( void )
 	std::vector<Puzzle *>			tmpList;
 
 	tmp = this->sortPuzzles[0]->getWeight();
+	std::cout << "Search solution for the following state (weight = " << tmp << ") : " << std::endl;
 	while ( i < this->sortPuzzles.size() && this->sortPuzzles[i]->getWeight() == tmp )
 	{
 		tmpList.push_back( this->sortPuzzles[i] );
@@ -82,10 +82,27 @@ void									NPuzzle::aStar( void )
 
 	for ( size_t j = 0; j < tmpList.size(); ++j )
 	{
+		this->printStep( tmpList[j] );
 		this->findMove( tmpList[j] );
 	}
 
 	this->aStar();
+}
+
+void									NPuzzle::printStep( Puzzle *puzzle )
+{
+	std::vector< std::vector<int> >		tmp = puzzle->getPuzzle();
+
+	std::cout << "rank: " << puzzle->getRank() << std::endl;
+	for ( int i = 0; i < this->size; ++i )
+	{
+		for ( int j = 0; j < this->size; ++j )
+		{
+			std::cout << tmp[i][j] << "  ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << "--------" << std::endl;
 }
 
 void									NPuzzle::findMove( Puzzle *puzzle )
@@ -101,10 +118,10 @@ void									NPuzzle::findMove( Puzzle *puzzle )
 		{
 			if ( tmp[i][j] == 0 )
 			{
-				this->generateMove( tmp, i, j, i - 1, j );
-				this->generateMove( tmp, i, j, i + 1, j );
-				this->generateMove( tmp, i, j, i, j - 1 );
-				this->generateMove( tmp, i, j, i, j + 1 );
+				this->generateMove( puzzle, i, j, i - 1, j );
+				this->generateMove( puzzle, i, j, i + 1, j );
+				this->generateMove( puzzle, i, j, i, j - 1 );
+				this->generateMove( puzzle, i, j, i, j + 1 );
 				return ;
 			}
 			j++;
@@ -115,8 +132,9 @@ void									NPuzzle::findMove( Puzzle *puzzle )
 	return ;
 }
 
-void			NPuzzle::generateMove( std::vector< std::vector<int> > src, int y, int x, int y2, int x2 )
+void			NPuzzle::generateMove( Puzzle *puzzle, int y, int x, int y2, int x2 )
 {
+	std::vector< std::vector<int> >		src = puzzle->getPuzzle();
 	int				tmp;
 	unsigned long	index;
 	Puzzle			*step;
@@ -127,9 +145,9 @@ void			NPuzzle::generateMove( std::vector< std::vector<int> > src, int y, int x,
 	tmp = src[y][x];
 	src[y][x] = src[y2][x2];
 	src[y2][x2] = tmp;
-	step = new Puzzle( this->size, src, this->puzzle_end );
+	step = new Puzzle( this->size, src, this->puzzle_end, puzzle->getRank() + 1 );
 	if ( step->isSolution() )
-		this->end();
+		this->end( puzzle, step );
 
 	index = 0;
 	while ( index < this->sortPuzzles.size() && step->getWeight() > this->sortPuzzles[index]->getWeight() )
@@ -140,22 +158,18 @@ void			NPuzzle::generateMove( std::vector< std::vector<int> > src, int y, int x,
 	else
 		this->sortPuzzles.push_back( step );
 
-	for ( int i = 0; i < this->size; ++i )
-	{
-		for ( int j = 0; j < this->size; ++j )
-		{
-			std::cout << src[i][j] << "  ";
-		}
-		std::cout << std::endl;
-	}
-
 	this->puzzles.push_back( step );
 }
 
 
-void									NPuzzle::end( void )
+void									NPuzzle::end(  Puzzle * src, Puzzle * solution )
 {
-	std::cout << "Good" << std::endl;
+	std::cout << "Solution found ! It's the next of this state : " << std::endl;
+	this->printStep( src );
+
+	std::cout << "And the solution is : " << std::endl;
+	this->printStep( solution );
+
 	exit( 1 );
 }
 
