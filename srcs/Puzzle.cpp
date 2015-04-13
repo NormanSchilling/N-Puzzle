@@ -8,10 +8,16 @@ Puzzle::Puzzle( void ) : size( 3 )
 	return ;
 }
 
-Puzzle::Puzzle( int size, std::vector< std::vector<int> > puzzle, std::vector< std::vector<int> > puzzle_end, int rank ) : size( size ), weight( rank ), rank( rank ), puzzle( puzzle ), puzzle_end( puzzle_end )
+Puzzle::Puzzle( int size, std::vector< std::vector<int> > puzzle, std::vector< std::vector<int> > puzzle_end, 
+	int rank, std::string heuristic ) : size( size ), weight( rank ), rank( rank ), puzzle( puzzle ), puzzle_end( puzzle_end )
 {
-	// this->calculWeight();
-	this->calculDistance( );
+	if ( heuristic.compare( "weight" ) == 0 )
+		this->calculWeight( );
+	else if ( heuristic.compare( "distance" ) == 0 )
+		this->calculDistance( );
+	// else if ( heuristic.compare( "together" ) == 0 )
+	// 	return ( true );
+
 	return ;
 }
 
@@ -106,8 +112,6 @@ void	Puzzle::calculDistance()
 			}
 		}
 	}
-
-	std::cout << "weight = " << this->weight << std::endl;
 }
 
 bool	Puzzle::isSolution( void )
