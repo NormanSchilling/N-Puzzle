@@ -8,8 +8,8 @@ Puzzle::Puzzle( void ) : size( 3 )
 	return ;
 }
 
-Puzzle::Puzzle( int size, std::vector< std::vector<int> > puzzle, std::vector< std::vector<int> > puzzle_end, 
-	int rank, std::string heuristic ) : size( size ), weight( rank ), rank( rank ), puzzle( puzzle ), puzzle_end( puzzle_end )
+Puzzle::Puzzle( int size, int **puzzle, int **puzzle_end, int rank, Puzzle * parent, std::string heuristic ) : size( size ),
+				weight( rank ), rank( rank ), puzzle( puzzle ), puzzle_end( puzzle_end ), parent( parent )
 {
 	if ( heuristic.compare( "weight" ) == 0 )
 		this->weight = this->calculWeight( );
@@ -28,6 +28,11 @@ Puzzle::Puzzle( Puzzle const & cpy )
 
 Puzzle::~Puzzle( void )
 {
+	// for ( int i = 0; i < this->size; ++i )
+	// {
+	// 	delete [] this->puzzle[i];
+	// }
+	// delete [] this->puzzle;
 	return ;
 }
 
@@ -44,6 +49,7 @@ Puzzle &	Puzzle::operator=( Puzzle const & cpy )
 	this->rank = cpy.getRank();
 	this->size = cpy.getSize();
 	this->puzzle_end = cpy.getPuzzleEnd();
+	this->parent = cpy.getParent();
 	return ( *this );
 }
 
@@ -56,25 +62,10 @@ bool	Puzzle::operator==( Puzzle const & rhs )
 	{
 		for ( int x = 0; x < this->size; ++x )
 		{
-			if ( this->puzzle[y][x] != rhs.getPuzzle()[y][x] )
+			if ( this->puzzle[y][x] != rhs.puzzle[y][x] )
 				return ( false );
 		}
 	}
-
-	// std::cout << "POKPOKPOK" << std::endl;
-	// for ( int i = 0; i < this->size; ++i )
-	// {
-	// 	for ( int j = 0; j < this->size; ++j )
-	// 	{
-	// 		std::cout << this->puzzle[i][j] << "\t";
-	// 	}
-	// 		std::cout << "\t\t\t";
-	// 	for ( int j = 0; j < this->size; ++j )
-	// 	{
-	// 		std::cout << rhs.puzzle[i][j] << "\t";
-	// 	}
-	// 	std::cout << std::endl;
-	// }
 
 	return ( true );
 }
@@ -155,21 +146,25 @@ int									Puzzle::getWeight( void ) const
 	return ( this->weight );
 }
 
-std::vector< std::vector<int> >		Puzzle::getPuzzle( void ) const
+int **								Puzzle::getPuzzle( void ) const
 {
-	std::vector< std::vector<int> >		tmp;
+	int		**tmp = new int*[this->size];
 
 	for (int i = 0; i < this->size; ++i)
 	{
-		std::vector<int>	tmp2;
+		tmp[i] = new int[this->size];
 		for (int j = 0; j < this->size; ++j)
 		{
-			tmp2.push_back( this->puzzle[i][j] );
+			tmp[i][j] = this->puzzle[i][j];
 		}
-		tmp.push_back( tmp2 );
 	}
 
 	return ( tmp );
+}
+
+int **								Puzzle::getPuzzleAddr( void ) const
+{
+	return ( this->puzzle );
 }
 
 int									Puzzle::getRank( void ) const
@@ -177,7 +172,7 @@ int									Puzzle::getRank( void ) const
 	return ( this->rank );
 }
 
-std::vector< std::vector<int> >		Puzzle::getPuzzleEnd( void ) const
+int **								Puzzle::getPuzzleEnd( void ) const
 {
 	return ( this->puzzle_end );
 }
@@ -185,4 +180,9 @@ std::vector< std::vector<int> >		Puzzle::getPuzzleEnd( void ) const
 int									Puzzle::getSize( void ) const
 {
 	return ( this->size );
+}
+
+Puzzle *							Puzzle::getParent( void ) const
+{
+	return ( this->parent );
 }
