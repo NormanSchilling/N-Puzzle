@@ -15,7 +15,7 @@ class NPuzzle
 		** CONSTRUCT & DESTRUCT
 		*/
 		NPuzzle( void );
-		NPuzzle( int size, std::vector< std::vector<int> > tab, std::string heuristic );
+		NPuzzle( int size, std::vector< std::vector<int> > tab, int heuristic );
 		NPuzzle( NPuzzle const & cpy );
 		~NPuzzle( void );
 
@@ -43,7 +43,7 @@ class NPuzzle
 		int									**puzzle_end;
 		std::vector<Puzzle *>				puzzles;
 		std::vector<Puzzle *>				sortPuzzles;
-		std::string							heuristic;
+		int									heuristic;
 
 		void								generateMove( Puzzle *puzzle, int x, int y, int x2, int y2 );
 		void								findMove( Puzzle *puzzle );

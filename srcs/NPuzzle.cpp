@@ -4,12 +4,13 @@
 /*
 ** CONSTRUCT & DESTRUCT
 */
-NPuzzle::NPuzzle( void ) : size( 3 ), heuristic( "weight" )
+NPuzzle::NPuzzle( void ) : size( 3 ), heuristic( 1 )
 {
 	return ;
 }
 
-NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab, std::string heuristic ) : size( size ), heuristic( heuristic )
+
+NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab, int heuristic ) : size( size ), heuristic( heuristic )
 {
 	this->puzzle_init = new int*[this->size];
 

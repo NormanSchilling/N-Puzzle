@@ -14,7 +14,7 @@ class Puzzle
 		** CONSTRUCT & DESTRUCT
 		*/
 		Puzzle( void );
-		Puzzle( int size, int **puzzle, int **puzzle_end, int rank, Puzzle *parent, std::string heuristic );
+		Puzzle( int size, int **puzzle, int **puzzle_end, int rank, Puzzle *parent, int heuristic );
 		Puzzle( Puzzle const & cpy );
 		~Puzzle( void );
 

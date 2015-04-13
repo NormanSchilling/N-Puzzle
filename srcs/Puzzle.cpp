@@ -8,14 +8,14 @@ Puzzle::Puzzle( void ) : size( 3 )
 	return ;
 }
 
-Puzzle::Puzzle( int size, int **puzzle, int **puzzle_end, int rank, Puzzle * parent, std::string heuristic ) : size( size ),
+Puzzle::Puzzle( int size, int **puzzle, int **puzzle_end, int rank, Puzzle * parent, int heuristic ) : size( size ),
 				weight( rank ), rank( rank ), puzzle( puzzle ), puzzle_end( puzzle_end ), parent( parent )
 {
-	if ( heuristic.compare( "weight" ) == 0 )
+	if ( heuristic == 1 )
 		this->weight = this->calculWeight( );
-	else if ( heuristic.compare( "distance" ) == 0 )
+	else if ( heuristic == 2 )
 		this->weight = this->calculDistance( );
-	else if ( heuristic.compare( "together" ) == 0 )
+	else if ( heuristic == 3 )
 		this->weight = this->calculDistance( ) + this->calculWeight( );
 
 	return ;
