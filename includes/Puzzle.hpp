@@ -33,6 +33,7 @@ class Puzzle
 		*/
 		int			getWeight( void ) const;
 		int			**getPuzzle( void ) const;
+		int			**getPuzzleAddr( void ) const;
 		int			getRank( void ) const;
 		int			**getPuzzleEnd( void ) const;
 		int			getSize( void ) const;
@@ -46,7 +47,7 @@ class Puzzle
 		int			rank;
 		int			**puzzle;
 		int			**puzzle_end;
-		Puzzle		* parent;
+		Puzzle		*parent;
 };
 
 #endif

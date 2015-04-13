@@ -69,17 +69,20 @@ void									NPuzzle::aStar( )
 {
 	Puzzle *			tmpPuzzle;
 
-	tmpPuzzle = new Puzzle( *(this->sortPuzzles[0]) );
-	this->puzzles.push_back( tmpPuzzle );
-	delete this->sortPuzzles[0];
-	this->sortPuzzles.erase( this->sortPuzzles.begin() );
-	this->findMove( tmpPuzzle );
-	this->aStar();
+	while (1)
+	{
+		tmpPuzzle = new Puzzle( *(this->sortPuzzles[0]) );
+		this->puzzles.push_back( tmpPuzzle );
+		delete this->sortPuzzles[0];
+		this->sortPuzzles.erase( this->sortPuzzles.begin() );
+		this->findMove( tmpPuzzle );
+		// this->aStar();
+	}
 }
 
 void									NPuzzle::printStep( Puzzle *puzzle )
 {
-	int		**tmp = puzzle->getPuzzle();
+	int		**tmp = puzzle->getPuzzleAddr();
 
 	std::cout << "rank: " << puzzle->getRank() << std::endl;
 	std::cout << "weight: " << puzzle->getWeight() << std::endl;
@@ -96,7 +99,7 @@ void									NPuzzle::printStep( Puzzle *puzzle )
 
 void									NPuzzle::findMove( Puzzle *puzzle )
 {
-	int		**tmp = puzzle->getPuzzle();
+	int		**tmp = puzzle->getPuzzleAddr();
 	int j;
 	int i = 0;
 
@@ -143,7 +146,7 @@ bool			NPuzzle::alreadyExist( Puzzle *puzzle )
 
 void			NPuzzle::generateMove( Puzzle *puzzle, int y, int x, int y2, int x2 )
 {
-	int			**src = puzzle->getPuzzle();
+	int				**src = puzzle->getPuzzle();
 	unsigned long	index = 0;
 	Puzzle			*step;
 

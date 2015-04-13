@@ -22,6 +22,11 @@ Puzzle::Puzzle( Puzzle const & cpy )
 
 Puzzle::~Puzzle( void )
 {
+	// for ( int i = 0; i < this->size; ++i )
+	// {
+	// 	delete [] this->puzzle[i];
+	// }
+	// delete [] this->puzzle;
 	return ;
 }
 
@@ -44,6 +49,7 @@ Puzzle &	Puzzle::operator=( Puzzle const & cpy )
 
 bool	Puzzle::operator==( Puzzle const & rhs )
 {
+	// int		**tmp = rhs.puzzle;
 	if ( this == &rhs )
 		return ( true );
 
@@ -51,7 +57,7 @@ bool	Puzzle::operator==( Puzzle const & rhs )
 	{
 		for ( int x = 0; x < this->size; ++x )
 		{
-			if ( this->puzzle[y][x] != rhs.getPuzzle()[y][x] )
+			if ( this->puzzle[y][x] != rhs.puzzle[y][x] )
 				return ( false );
 		}
 	}
@@ -110,6 +116,11 @@ int **								Puzzle::getPuzzle( void ) const
 	}
 
 	return ( tmp );
+}
+
+int **								Puzzle::getPuzzleAddr( void ) const
+{
+	return ( this->puzzle );
 }
 
 int									Puzzle::getRank( void ) const
