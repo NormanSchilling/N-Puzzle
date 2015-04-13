@@ -8,7 +8,11 @@
 
 static void				ft_usage( void )
 {
-	std::cout << "./npuzzle [file]" << std::endl;
+	std::cout << "./npuzzle [file] [nameHeuristic]" << std::endl;
+	std::cout << "| Heuristic ChooseList |" << std::endl;
+	std::cout << "weight" << std::endl;
+	std::cout << "distance" << std::endl;
+	std::cout << "together" << std::endl;
 
 	return ;
 }
@@ -46,13 +50,42 @@ std::vector<int>	getArray( std::string line )
 	return ( v );
 }
 
+bool			ft_check_heuristic( std::string heuristic )
+{
+	if ( heuristic.compare( "weight" ) == 0 )
+		return ( true );
+	else if ( heuristic.compare( "distance" ) == 0 )
+		return ( true );
+	else if ( heuristic.compare( "together" ) == 0 )
+		return ( true );
+
+	return ( false );
+}
+
 int				main( int argc, char *argv[] )
 {
-	if ( argc != 2 )
+	std::string 				heuristic( "weight" );
+
+	if ( argc == 3 )
 	{
-		ft_usage();
+		std::string				heuristic2( argv[2] );
+		heuristic = heuristic2;
+	}
+
+	if ( argc < 2  && argc > 3 )
+	{
+		ft_usage( );
 		return ( -1 );
 	}
+
+
+	if ( argc == 3 && ft_check_heuristic( heuristic ) == false )
+	{
+		ft_usage( );
+		return ( -1 );
+	}
+
+	std::cout << heuristic << std::endl;
 
 	std::string						line;
 	std::ifstream					puzzle_file( argv[1] );
@@ -79,7 +112,7 @@ int				main( int argc, char *argv[] )
 				tab.push_back( getArray(line) );
 		}
 		puzzle_file.close();
-		np = new NPuzzle( size, tab );
+		np = new NPuzzle( size, tab, heuristic );
 	}
 	else
 		std::cout << "Unable to open file" << std::endl;

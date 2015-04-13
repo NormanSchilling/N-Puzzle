@@ -14,7 +14,7 @@ class NPuzzle
 		** CONSTRUCT & DESTRUCT
 		*/
 		NPuzzle( void );
-		NPuzzle( int size, std::vector< std::vector<int> > tab );
+		NPuzzle( int size, std::vector< std::vector<int> > tab, std::string heuristic );
 		NPuzzle( NPuzzle const & cpy );
 		~NPuzzle( void );
 
@@ -29,7 +29,6 @@ class NPuzzle
 		int		getSize( void ) const;
 		std::vector< std::vector<int> >		getPuzzleInit( void ) const;
 
-
 		/*
 		** METHOD
 		*/
@@ -37,19 +36,19 @@ class NPuzzle
 		void	aStar( void );
 		void	end( Puzzle * src, Puzzle * solution );
 
-
 	private:
 		int									size;
 		std::vector< std::vector<int> >		puzzle_init;
 		std::vector< std::vector<int> >		puzzle_end;
 		std::vector<Puzzle *>				puzzles;
 		std::vector<Puzzle *>				sortPuzzles;
+		std::string							heuristic;
 
 		void								generateMove( Puzzle *puzzle, int x, int y, int x2, int y2 );
 		void								findMove( Puzzle *puzzle );
 		void								printStep( Puzzle *puzzle );
 		bool								alreadyExist( Puzzle *puzzle );
-		// Heuristic				*heuristic;
+
 
 };
 

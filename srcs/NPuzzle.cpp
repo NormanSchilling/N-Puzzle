@@ -4,12 +4,12 @@
 /*
 ** CONSTRUCT & DESTRUCT
 */
-NPuzzle::NPuzzle( void ) : size( 3 )
+NPuzzle::NPuzzle( void ) : size( 3 ), heuristic( "weight" )
 {
 	return ;
 }
 
-NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab ) : size( size ), puzzle_init( tab )
+NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab, std::string heuristic ) : size( size ), puzzle_init( tab ), heuristic( heuristic )
 {
 	std::vector<int>		v;
 
@@ -24,8 +24,8 @@ NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab ) : size( size )
 	}
 
 	this->generateSolution( );
-	this->puzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0 ) );
-	this->sortPuzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0 ) );
+	this->puzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0, heuristic ) );
+	this->sortPuzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0, heuristic ) );
 
 	this->aStar();
 	return ;
@@ -220,7 +220,6 @@ bool			NPuzzle::alreadyExist( Puzzle *puzzle )
 		if ( *(this->sortPuzzles[i]) == *(puzzle) )
 			return ( true );
 	}
-
 	return ( false );
 }
 
@@ -228,6 +227,7 @@ void			NPuzzle::generateMove( Puzzle *puzzle, int y, int x, int y2, int x2 )
 {
 	std::vector< std::vector<int> >		src = puzzle->getPuzzle();
 	unsigned long	index = 0;
+
 	Puzzle			*step;
 
 	if ( x2 < 0 || x2 >= this->size || y2 < 0 || y2 >= this->size )
@@ -235,7 +235,7 @@ void			NPuzzle::generateMove( Puzzle *puzzle, int y, int x, int y2, int x2 )
 
 	src[y][x] = src[y2][x2];
 	src[y2][x2] = 0;
-	step = new Puzzle( this->size, src, this->puzzle_end, puzzle->getRank() + 1 );
+	step = new Puzzle( this->size, src, this->puzzle_end, puzzle->getRank() + 1, this->heuristic );
 
 	if ( step->isSolution() )
 		this->end( puzzle, step );
@@ -252,10 +252,13 @@ void			NPuzzle::generateMove( Puzzle *puzzle, int y, int x, int y2, int x2 )
 	while ( index < this->sortPuzzles.size() && step->getWeight() > this->sortPuzzles[index]->getWeight() )
 		index++;
 
+	this->puzzles.push_back( step );
+
 	if ( index < this->sortPuzzles.size() )
 		this->sortPuzzles.insert( this->sortPuzzles.begin() + index, new Puzzle( *step ) );
 	else
 		this->sortPuzzles.push_back( new Puzzle( *step ) );
+
 }
 
 
