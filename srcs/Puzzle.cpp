@@ -19,7 +19,7 @@ Puzzle::Puzzle( int size, std::vector< std::vector<int> > puzzle, std::vector< s
 		this->weight = this->calculDistance( ) + this->calculWeight( );
 
 	std::cout << "WEIGHT FINAL = " << this->weight << std::endl;
-	exit(0);
+
 	return ;
 }
 
