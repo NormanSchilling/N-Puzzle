@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <Puzzle.hpp>
+#include <unistd.h>
 
 class NPuzzle
 {
@@ -27,19 +28,19 @@ class NPuzzle
 		** GET & SET
 		*/
 		int		getSize( void ) const;
-		std::vector< std::vector<int> >		getPuzzleInit( void ) const;
+		int		**getPuzzleInit( void ) const;
 
 		/*
 		** METHOD
 		*/
 		void	generateSolution( void );
-		void	aStar( void );
-		void	end( Puzzle * src, Puzzle * solution );
+		void	aStar( );
+		void	end( Puzzle * solution );
 
 	private:
 		int									size;
-		std::vector< std::vector<int> >		puzzle_init;
-		std::vector< std::vector<int> >		puzzle_end;
+		int									**puzzle_init;
+		int									**puzzle_end;
 		std::vector<Puzzle *>				puzzles;
 		std::vector<Puzzle *>				sortPuzzles;
 		int									heuristic;
@@ -48,7 +49,6 @@ class NPuzzle
 		void								findMove( Puzzle *puzzle );
 		void								printStep( Puzzle *puzzle );
 		bool								alreadyExist( Puzzle *puzzle );
-
 
 };
 

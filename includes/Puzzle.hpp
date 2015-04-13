@@ -14,7 +14,7 @@ class Puzzle
 		** CONSTRUCT & DESTRUCT
 		*/
 		Puzzle( void );
-		Puzzle( int size, std::vector< std::vector<int> > puzzle, std::vector< std::vector<int> > puzzle_end, int rank, int heuristic );
+		Puzzle( int size, int **puzzle, int **puzzle_end, int rank, Puzzle *parent, int heuristic );
 		Puzzle( Puzzle const & cpy );
 		~Puzzle( void );
 
@@ -35,21 +35,23 @@ class Puzzle
 		/*
 		** GETTER
 		*/
-		int									getWeight( void ) const;
-		std::vector< std::vector<int> >		getPuzzle( void ) const;
-		int									getRank( void ) const;
-		std::vector< std::vector<int> >		getPuzzleEnd( void ) const;
-		int									getSize( void ) const;
+		int			getWeight( void ) const;
+		int			**getPuzzle( void ) const;
+		int			**getPuzzleAddr( void ) const;
+		int			getRank( void ) const;
+		int			**getPuzzleEnd( void ) const;
+		int			getSize( void ) const;
+		Puzzle *	getParent( void ) const;
 
 
 
 	private:
-		int									size;
-		int									weight;
-		int									rank;
-		std::vector< std::vector<int> >		puzzle;
-		std::vector< std::vector<int> >		puzzle_end;
-
+		int			size;
+		int			weight;
+		int			rank;
+		int			**puzzle;
+		int			**puzzle_end;
+		Puzzle		*parent;
 };
 
 #endif

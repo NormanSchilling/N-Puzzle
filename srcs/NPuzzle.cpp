@@ -9,24 +9,25 @@ NPuzzle::NPuzzle( void ) : size( 3 ), heuristic( 1 )
 	return ;
 }
 
-NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab, int heuristic ) : size( size ), puzzle_init( tab ), heuristic( heuristic )
+
+NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab, int heuristic ) : size( size ), heuristic( heuristic )
 {
-	std::vector<int>		v;
+	this->puzzle_init = new int*[this->size];
 
-	for ( int i = 0; i < this->size; ++i )
+	for (int i = 0; i < this->size; ++i)
 	{
-		v.push_back( 0 );
-	}
-
-	for ( int i = 0; i < this->size; ++i )
-	{
-		this->puzzle_end.push_back( v );
+		for (int j = 0; j < this->size; ++j)
+		{
+			if ( j == 0 )
+				this->puzzle_init[i] = new int[this->size];
+			this->puzzle_init[i][j] = tab[i][j];
+		}
 	}
 
 	this->generateSolution( );
-	this->puzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0, heuristic ) );
-	this->sortPuzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0, heuristic ) );
-
+	this->puzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0, NULL, heuristic ) );
+	this->sortPuzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0, NULL, heuristic ) );
+	std::cout << "Nous recherchons la solution a la grande question, veuillez patienter ..." << std::endl;
 	this->aStar();
 	return ;
 }
@@ -57,7 +58,7 @@ int										NPuzzle::getSize( void ) const
 	return ( this->size );
 }
 
-std::vector< std::vector<int> >			NPuzzle::getPuzzleInit( void ) const
+int **									NPuzzle::getPuzzleInit( void ) const
 {
 	return ( this->puzzle_init );
 }
@@ -65,105 +66,24 @@ std::vector< std::vector<int> >			NPuzzle::getPuzzleInit( void ) const
 /*
 ** METHOD
 */
-void									NPuzzle::aStar( void )
+void									NPuzzle::aStar( )
 {
 	Puzzle *			tmpPuzzle;
 
-	int					i = 0;
-	while ( 1 )
+	while (1)
 	{
 		tmpPuzzle = new Puzzle( *(this->sortPuzzles[0]) );
 		this->puzzles.push_back( tmpPuzzle );
 		delete this->sortPuzzles[0];
 		this->sortPuzzles.erase( this->sortPuzzles.begin() );
-
-		// std::cout << "Search solution for the following state (weight = " << tmpPuzzle->getWeight() << ") : " << std::endl;
-		// this->printStep( tmpPuzzle );
-		std::cout << i++ << std::endl;
-
-		// std::cout << std::endl;
-		// std::cout << "GROSSE list" << std::endl;
-		// for (unsigned long w = 0; w < this->puzzles.size(); ++w)
-		// {
-		// 	this->printStep(this->puzzles[w]);
-		// }
 		this->findMove( tmpPuzzle );
-
-		// std::cout << std::endl;
-		// std::cout << "Sort list" << std::endl;
-		// for (unsigned long w = 0; w < this->sortPuzzles.size(); ++w)
-		// {
-		// 	this->printStep(this->sortPuzzles[w]);
-		// }
-		// std::cout << std::endl;
-		// std::cout << std::endl;
-		// std::cout << std::endl;
-		// std::cout << std::endl;
-		// std::cout << std::endl;
-		// std::cout << std::endl;
-
-
-		// delete tmpPuzzle;
-		// if ( this->sortPuzzles.size() > 10 )
-		// 	exit( -1 );
+		// this->aStar();
 	}
-
 }
 
 void									NPuzzle::printStep( Puzzle *puzzle )
 {
-
-	// if ( this->sortPuzzles.size() > 10 )
-	// {
-	// 	exit( - 1);
-	// }
-	// // td::cout << "rank: " << puzzle->getRank() << std::endl;
-	// for (unsigned long w = 0; w < this->sortPuzzles.size(); ++w)
-	// {
-	// 	for ( int i = 0; i < this->size; ++i )
-	// 	{
-	// 		for ( int j = 0; j < this->size; ++j )
-	// 		{
-	// 			std::cout << this->sortPuzzles[w]->getPuzzle()[i][j] << "\t";
-	// 		}
-	// 		std::cout << std::endl;
-	// 	}
-	// 		std::cout << std::endl;
-
-	// }
-	// 		std::cout << std::endl;
-	// 		std::cout << std::endl;
-	// 		std::cout << std::endl;
-	// 		std::cout << std::endl;
-	// 		std::cout << std::endl;
-	// 		std::cout << std::endl;
-	// 		std::cout << std::endl;
-	// 		std::cout << std::endl;
-	// 		std::cout << std::endl;
-	// 		std::cout << std::endl;
-	// 		std::cout << std::endl;
-	// 		std::cout << std::endl;
-	// 		std::cout << std::endl;
-
-	// for (unsigned long w = 0; w < this->puzzles.size(); ++w)
-	// {
-	// 	for ( int i = 0; i < this->size; ++i )
-	// 	{
-	// 		for ( int j = 0; j < this->size; ++j )
-	// 		{
-	// 			std::cout << this->puzzles[w]->getPuzzle()[i][j] << "\t";
-	// 		}
-	// 		std::cout << std::endl;
-	// 	}
-	// 		std::cout << std::endl;
-
-	// }
-
-	// if ( puzzle )
-	// 	return;
-
-
-	std::vector< std::vector<int> >		tmp = puzzle->getPuzzle();
+	int		**tmp = puzzle->getPuzzleAddr();
 
 	std::cout << "rank: " << puzzle->getRank() << std::endl;
 	std::cout << "weight: " << puzzle->getWeight() << std::endl;
@@ -180,7 +100,7 @@ void									NPuzzle::printStep( Puzzle *puzzle )
 
 void									NPuzzle::findMove( Puzzle *puzzle )
 {
-	std::vector< std::vector<int> >		tmp = puzzle->getPuzzle();
+	int		**tmp = puzzle->getPuzzleAddr();
 	int j;
 	int i = 0;
 
@@ -191,7 +111,6 @@ void									NPuzzle::findMove( Puzzle *puzzle )
 		{
 			if ( tmp[i][j] == 0 )
 			{
-				// std::cout << "solution genere : " << std::endl;
 				this->generateMove( puzzle, i, j, i - 1, j );
 				this->generateMove( puzzle, i, j, i + 1, j );
 				this->generateMove( puzzle, i, j, i, j - 1 );
@@ -208,6 +127,8 @@ void									NPuzzle::findMove( Puzzle *puzzle )
 
 bool			NPuzzle::alreadyExist( Puzzle *puzzle )
 {
+	if ( puzzle->getParent() && puzzle->getParent()->getParent() && *(puzzle->getParent()->getParent()) == *(puzzle) )
+		return ( true );
 
 	for ( unsigned long i = 0; i < this->puzzles.size(); ++i )
 	{
@@ -225,7 +146,7 @@ bool			NPuzzle::alreadyExist( Puzzle *puzzle )
 
 void			NPuzzle::generateMove( Puzzle *puzzle, int y, int x, int y2, int x2 )
 {
-	std::vector< std::vector<int> >		src = puzzle->getPuzzle();
+	int				**src = puzzle->getPuzzle();
 	unsigned long	index = 0;
 
 	Puzzle			*step;
@@ -235,40 +156,47 @@ void			NPuzzle::generateMove( Puzzle *puzzle, int y, int x, int y2, int x2 )
 
 	src[y][x] = src[y2][x2];
 	src[y2][x2] = 0;
-	step = new Puzzle( this->size, src, this->puzzle_end, puzzle->getRank() + 1, this->heuristic );
+	step = new Puzzle( this->size, src, this->puzzle_end, puzzle->getRank() + 1, new Puzzle( *puzzle ), this->heuristic );
 
 	if ( step->isSolution() )
-		this->end( puzzle, step );
+		this->end( step );
 	if ( this->alreadyExist( step ) )
 	{
 		delete step;
 		return ;
 	}
 
-	// this->printStep( step );
-
-	// this->puzzles.push_back( step );
-
 	while ( index < this->sortPuzzles.size() && step->getWeight() > this->sortPuzzles[index]->getWeight() )
 		index++;
 
-	this->puzzles.push_back( step );
-
 	if ( index < this->sortPuzzles.size() )
-		this->sortPuzzles.insert( this->sortPuzzles.begin() + index, new Puzzle( *step ) );
+		this->sortPuzzles.insert( this->sortPuzzles.begin() + index, step );
 	else
-		this->sortPuzzles.push_back( new Puzzle( *step ) );
-
+		this->sortPuzzles.push_back( step );
 }
 
 
-void									NPuzzle::end( Puzzle * src, Puzzle * solution )
+void									NPuzzle::end( Puzzle * solution )
 {
-	std::cout << "Solution found ! It's the next of this state : " << std::endl;
-	this->printStep( src );
+	std::vector<Puzzle *>		list;
+	std::cout << "Solution trouvee !" << std::endl;
+	std::cout << this->puzzles.size() << " puzzles closed" << std::endl;
+	std::cout << this->sortPuzzles.size() << " puzzles open" << std::endl;
+	std::cout << this->sortPuzzles.size() + this->puzzles.size() << " puzzles calculee" << std::endl;
 
-	std::cout << "And the solution is : " << std::endl;
-	this->printStep( solution );
+	std::cout << std::endl << "Affichage de la solution dans 2 secondes" << std::endl;
+	sleep( 2 );
+
+	while ( solution )
+	{
+		list.insert( list.begin(), solution );
+		solution = solution->getParent();
+	}
+
+	for ( unsigned long i = 0; i < list.size(); ++i )
+	{
+		this->printStep( list[i] );
+	}
 
 	exit( 1 );
 }
@@ -281,6 +209,17 @@ void									NPuzzle::generateSolution( void )
 	int			inc_x = 1;
 	int			inc_y = 0;
 	int			tmp;
+
+	this->puzzle_end = new int*[this->size];
+
+	for ( int index = 0; index < this->size; ++index )
+	{
+		this->puzzle_end[index] = new int[this->size];
+		for (int tmp_index = 0; tmp_index < this->size; ++tmp_index)
+		{
+			this->puzzle_end[index][tmp_index] = 0;
+		}
+	}
 
 	while ( i < this->size * this->size )
 	{
