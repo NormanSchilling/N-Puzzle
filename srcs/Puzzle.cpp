@@ -18,8 +18,6 @@ Puzzle::Puzzle( int size, std::vector< std::vector<int> > puzzle, std::vector< s
 	else if ( heuristic.compare( "together" ) == 0 )
 		this->weight = this->calculDistance( ) + this->calculWeight( );
 
-	std::cout << "WEIGHT FINAL = " << this->weight << std::endl;
-
 	return ;
 }
 
@@ -113,10 +111,7 @@ int		Puzzle::calculDistanceOneNumber( int a, int b )
 		while ( y < this->size )
 		{
 			if ( this->puzzle_end[y][x] == this->puzzle[a][b] )
-			{
 				weightOfNumber = abs(x - b) + abs(y - a);
-				std::cout << "weight of Number " << this->puzzle[a][b] << " = " << weightOfNumber << std::endl;
-			}
 			y++;
 		}
 		x++;
