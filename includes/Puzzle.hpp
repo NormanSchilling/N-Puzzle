@@ -19,12 +19,14 @@ class Puzzle
 		/*
 		** OPERATOR
 		*/
-		Puzzle operator=( Puzzle const & cpy );
+		Puzzle &	operator=( Puzzle const & cpy );
+		bool		operator==( Puzzle const & rhs );
 
 		/*
 		** METHOD
 		*/
 		void	calculWeight();
+		bool	isSolution( void );
 
 		/*
 		** GETTER
@@ -32,7 +34,9 @@ class Puzzle
 		int									getWeight( void ) const;
 		std::vector< std::vector<int> >		getPuzzle( void ) const;
 		int									getRank( void ) const;
-		bool								isSolution( void );
+		std::vector< std::vector<int> >		getPuzzleEnd( void ) const;
+		int									getSize( void ) const;
+
 
 
 	private:
