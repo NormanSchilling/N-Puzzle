@@ -67,23 +67,18 @@ std::vector< std::vector<int> >			NPuzzle::getPuzzleInit( void ) const
 */
 void									NPuzzle::aStar( void )
 {
-	int					tmp;
-	unsigned long		i = 0;
-	std::vector<Puzzle *>			tmpList;
+	std::vector<Puzzle *>				tmpList;
 
-	tmp = this->sortPuzzles[0]->getWeight();
-	std::cout << "Search solution for the following state (weight = " << tmp << ") : " << std::endl;
-	while ( i < this->sortPuzzles.size() && this->sortPuzzles[i]->getWeight() == tmp )
+	for (unsigned int i = 0; i < this->sortPuzzles.size(); ++i)
 	{
 		tmpList.push_back( this->sortPuzzles[i] );
-		i++;
 	}
-	this->sortPuzzles.erase( this->sortPuzzles.begin(), this->sortPuzzles.begin() + i );
 
-	for ( size_t j = 0; j < tmpList.size(); ++j )
+	this->sortPuzzles.erase( this->sortPuzzles.begin() );
+	for (unsigned int i = 0; i < tmpList.size(); ++i)
 	{
-		this->printStep( tmpList[j] );
-		this->findMove( tmpList[j] );
+		findMove( tmpList[i] );
+		printStep( tmpList[i] );
 	}
 
 	this->aStar();
@@ -132,19 +127,41 @@ void									NPuzzle::findMove( Puzzle *puzzle )
 	return ;
 }
 
+bool			NPuzzle::isExist( Puzzle *step )
+{
+	int		x;
+	int		y;
+
+	for ( unsigned int i = 0; i < this->puzzles.size(); i++ )
+	{
+		y = 0;
+		x = 0;
+		while ( y < this->size && this->puzzles[i]->getPuzzle()[y][x] == step->getPuzzle()[y][x] )
+		{
+			while ( x < this->size && this->puzzles[i]->getPuzzle()[y][x] == step->getPuzzle()[y][x] )
+				x++;
+			y++;
+		}
+		if ( x == size && y == size )
+		{
+			std::cout << "is EXIST" << std::endl;
+			return true;
+		}
+	}
+	return ( false );
+}
+
 void			NPuzzle::generateMove( Puzzle *puzzle, int y, int x, int y2, int x2 )
 {
 	std::vector< std::vector<int> >		src = puzzle->getPuzzle();
-	int				tmp;
 	unsigned long	index;
 	Puzzle			*step;
 
 	if ( x2 < 0 || x2 >= this->size || y2 < 0 || y2 >= this->size )
 		return ;
 
-	tmp = src[y][x];
 	src[y][x] = src[y2][x2];
-	src[y2][x2] = tmp;
+	src[y2][x2] = 0;
 	step = new Puzzle( this->size, src, this->puzzle_end, puzzle->getRank() + 1 );
 	if ( step->isSolution() )
 		this->end( puzzle, step );
@@ -153,12 +170,15 @@ void			NPuzzle::generateMove( Puzzle *puzzle, int y, int x, int y2, int x2 )
 	while ( index < this->sortPuzzles.size() && step->getWeight() > this->sortPuzzles[index]->getWeight() )
 		index++;
 
+	if ( isExist( step ) )
+		return ;
+
+	this->puzzles.push_back( step );
+
 	if ( index < this->sortPuzzles.size() )
 		this->sortPuzzles.insert( this->sortPuzzles.begin() + index, step );
 	else
 		this->sortPuzzles.push_back( step );
-
-	this->puzzles.push_back( step );
 }
 
 

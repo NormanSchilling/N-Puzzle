@@ -29,14 +29,13 @@ class NPuzzle
 		int		getSize( void ) const;
 		std::vector< std::vector<int> >		getPuzzleInit( void ) const;
 
-
 		/*
 		** METHOD
 		*/
 		void	generateSolution( void );
 		void	aStar( void );
 		void	end( Puzzle * src, Puzzle * solution );
-
+		bool	isExist( Puzzle *step );
 
 	private:
 		int									size;
