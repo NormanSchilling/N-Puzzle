@@ -26,6 +26,7 @@ class Puzzle
 		** METHOD
 		*/
 		void	calculWeight();
+		void	calculDistance();
 		bool	isSolution( void );
 
 		/*

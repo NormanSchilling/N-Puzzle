@@ -252,9 +252,6 @@ void			NPuzzle::generateMove( Puzzle *puzzle, int y, int x, int y2, int x2 )
 	while ( index < this->sortPuzzles.size() && step->getWeight() > this->sortPuzzles[index]->getWeight() )
 		index++;
 
-	if ( isExist( step ) )
-		return ;
-
 	this->puzzles.push_back( step );
 
 	if ( index < this->sortPuzzles.size() )

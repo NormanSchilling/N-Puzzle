@@ -10,7 +10,8 @@ Puzzle::Puzzle( void ) : size( 3 )
 
 Puzzle::Puzzle( int size, std::vector< std::vector<int> > puzzle, std::vector< std::vector<int> > puzzle_end, int rank ) : size( size ), weight( rank ), rank( rank ), puzzle( puzzle ), puzzle_end( puzzle_end )
 {
-	this->calculWeight();
+	// this->calculWeight();
+	this->calculDistance( );
 	return ;
 }
 
@@ -85,6 +86,28 @@ void	Puzzle::calculWeight()
 				this->weight++;
 		}
 	}
+}
+
+void	Puzzle::calculDistance()
+{
+	int		tmp;
+	this->weight = 0;
+
+	for (int i = 0; i < this->size; ++i)
+	{
+		for (int j = 0; j < this->size; ++j)
+		{
+			if ( this->puzzle[i][j] != this->puzzle_end[i][j] )
+				tmp++;
+			else
+			{
+				this->weight += tmp;
+				tmp = 0;
+			}
+		}
+	}
+
+	std::cout << "weight = " << this->weight << std::endl;
 }
 
 bool	Puzzle::isSolution( void )
