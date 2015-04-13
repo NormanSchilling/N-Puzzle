@@ -35,7 +35,6 @@ class NPuzzle
 		void	generateSolution( void );
 		void	aStar( void );
 		void	end( Puzzle * src, Puzzle * solution );
-		bool	isExist( Puzzle *step );
 
 	private:
 		int									size;
@@ -47,6 +46,7 @@ class NPuzzle
 		void								generateMove( Puzzle *puzzle, int x, int y, int x2, int y2 );
 		void								findMove( Puzzle *puzzle );
 		void								printStep( Puzzle *puzzle );
+		bool								alreadyExist( Puzzle *puzzle );
 		// Heuristic				*heuristic;
 
 };
