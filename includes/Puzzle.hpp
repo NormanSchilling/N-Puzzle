@@ -14,7 +14,7 @@ class Puzzle
 		** CONSTRUCT & DESTRUCT
 		*/
 		Puzzle( void );
-		Puzzle( int size, std::vector< std::vector<int> > puzzle, std::vector< std::vector<int> > puzzle_end, int rank,  std::string heuristic );
+		Puzzle( int size, std::vector< std::vector<int> > puzzle, std::vector< std::vector<int> > puzzle_end, int rank, int heuristic );
 		Puzzle( Puzzle const & cpy );
 		~Puzzle( void );
 

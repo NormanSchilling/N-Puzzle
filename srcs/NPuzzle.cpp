@@ -4,12 +4,12 @@
 /*
 ** CONSTRUCT & DESTRUCT
 */
-NPuzzle::NPuzzle( void ) : size( 3 ), heuristic( "weight" )
+NPuzzle::NPuzzle( void ) : size( 3 ), heuristic( 1 )
 {
 	return ;
 }
 
-NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab, std::string heuristic ) : size( size ), puzzle_init( tab ), heuristic( heuristic )
+NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab, int heuristic ) : size( size ), puzzle_init( tab ), heuristic( heuristic )
 {
 	std::vector<int>		v;
 
