@@ -2,6 +2,8 @@
 # define PUZZLE_HPP
 
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
 #include <vector>
 
 class Puzzle
@@ -25,8 +27,9 @@ class Puzzle
 		/*
 		** METHOD
 		*/
-		void	calculWeight();
-		void	calculDistance();
+		int		calculWeight();
+		int		calculDistance();
+		int		calculDistanceOneNumber( int a, int b );
 		bool	isSolution( void );
 
 		/*

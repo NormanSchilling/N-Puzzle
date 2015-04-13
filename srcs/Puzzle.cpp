@@ -12,12 +12,14 @@ Puzzle::Puzzle( int size, std::vector< std::vector<int> > puzzle, std::vector< s
 	int rank, std::string heuristic ) : size( size ), weight( rank ), rank( rank ), puzzle( puzzle ), puzzle_end( puzzle_end )
 {
 	if ( heuristic.compare( "weight" ) == 0 )
-		this->calculWeight( );
+		this->weight = this->calculWeight( );
 	else if ( heuristic.compare( "distance" ) == 0 )
-		this->calculDistance( );
-	// else if ( heuristic.compare( "together" ) == 0 )
-	// 	return ( true );
+		this->weight = this->calculDistance( );
+	else if ( heuristic.compare( "together" ) == 0 )
+		this->weight = this->calculDistance( ) + this->calculWeight( );
 
+	std::cout << "WEIGHT FINAL = " << this->weight << std::endl;
+	exit(0);
 	return ;
 }
 
@@ -82,36 +84,58 @@ bool	Puzzle::operator==( Puzzle const & rhs )
 /*
 ** METHOD
 */
-void	Puzzle::calculWeight()
+int		Puzzle::calculWeight()
 {
+	int		weight = 0;
+
 	for (int i = 0; i < this->size; ++i)
 	{
 		for (int j = 0; j < this->size; ++j)
 		{
 			if ( this->puzzle[i][j] != this->puzzle_end[i][j] )
-				this->weight++;
+				weight++;
 		}
 	}
+
+	return ( weight );
 }
 
-void	Puzzle::calculDistance()
+int		Puzzle::calculDistanceOneNumber( int a, int b )
 {
-	int		tmp;
-	this->weight = 0;
+	int weightOfNumber = 0;
+	int	x;
+	int y;
+
+	x = 0;
+	while ( x < this->size )
+	{
+		y = 0;
+		while ( y < this->size )
+		{
+			if ( this->puzzle_end[y][x] == this->puzzle[a][b] )
+			{
+				weightOfNumber = abs(x - b) + abs(y - a);
+				std::cout << "weight of Number " << this->puzzle[a][b] << " = " << weightOfNumber << std::endl;
+			}
+			y++;
+		}
+		x++;
+	}
+	return ( weightOfNumber );
+}
+
+int		Puzzle::calculDistance()
+{
+	int		weight = 0;
 
 	for (int i = 0; i < this->size; ++i)
 	{
 		for (int j = 0; j < this->size; ++j)
 		{
-			if ( this->puzzle[i][j] != this->puzzle_end[i][j] )
-				tmp++;
-			else
-			{
-				this->weight += tmp;
-				tmp = 0;
-			}
+			weight += calculDistanceOneNumber( i, j );
 		}
 	}
+	return ( weight );
 }
 
 bool	Puzzle::isSolution( void )
