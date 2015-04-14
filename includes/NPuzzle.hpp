@@ -36,14 +36,18 @@ class NPuzzle
 		void	generateSolution( void );
 		void	aStar( );
 		void	end( Puzzle * solution );
+		bool	isSolvable( void );
 
 	private:
 		int									size;
 		int									**puzzle_init;
+		int									*puzzle_check;
 		int									**puzzle_end;
 		std::vector<Puzzle *>				puzzles;
 		std::vector<Puzzle *>				sortPuzzles;
 		int									heuristic;
+		int									inversion;
+		int									row_zero;
 
 		void								generateMove( Puzzle *puzzle, int x, int y, int x2, int y2 );
 		void								findMove( Puzzle *puzzle );

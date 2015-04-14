@@ -4,13 +4,13 @@
 /*
 ** CONSTRUCT & DESTRUCT
 */
-NPuzzle::NPuzzle( void ) : size( 3 ), heuristic( 1 )
+NPuzzle::NPuzzle( void ) : size( 3 ), heuristic( 1 ), inversion(0)
 {
 	return ;
 }
 
 
-NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab, int heuristic ) : size( size ), heuristic( heuristic )
+NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab, int heuristic ) : size( size ), heuristic( heuristic ), inversion(0)
 {
 	this->puzzle_init = new int*[this->size];
 
@@ -27,7 +27,14 @@ NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab, int heuristic )
 	this->generateSolution( );
 	this->puzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0, NULL, heuristic ) );
 	this->sortPuzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0, NULL, heuristic ) );
+	if ( !this->isSolvable() )
+	{
+		std::cout << "This puzzle is unsolvable" << std::endl;
+		exit(-1);
+	}
+
 	std::cout << "Nous recherchons la solution a la grande question, veuillez patienter ..." << std::endl;
+
 	this->aStar();
 	return ;
 }
@@ -209,7 +216,9 @@ void									NPuzzle::generateSolution( void )
 	int			inc_x = 1;
 	int			inc_y = 0;
 	int			tmp;
+	int			correct = 0;
 
+	this->puzzle_check = new int[this->size * this->size];
 	this->puzzle_end = new int*[this->size];
 
 	for ( int index = 0; index < this->size; ++index )
@@ -225,6 +234,13 @@ void									NPuzzle::generateSolution( void )
 	{
 		while ( x < this->size && y < this->size && x >= 0 && y >= 0 && this->puzzle_end[y][x] == 0 )
 		{
+			if ( this->puzzle_init[y][x] != 0 )
+				this->puzzle_check[i - 1 - correct] = this->puzzle_init[y][x];
+			else
+			{
+				this->row_zero = (this->size - 1) - y;
+				correct = 1;
+			}
 			this->puzzle_end[y][x] = i++;
 			x += inc_x;
 			y += inc_y;
@@ -237,7 +253,26 @@ void									NPuzzle::generateSolution( void )
 		x += inc_x;
 		y += inc_y;
 	}
+	this->puzzle_check[i - 1 - correct] = this->puzzle_init[y][x];
 
 	return ;
 }
+
+bool								NPuzzle::isSolvable( void )
+{
+	int		tmp;
+
+	for (int i = 0; i < this->size * this->size - 1; ++i)
+	{
+		tmp = this->puzzle_check[i];
+		for (int j = i + 1; j < this->size * this->size - 1; ++j)
+		{
+			if ( tmp > this->puzzle_check[j] )
+				this->inversion++;
+		}
+	}
+
+	return ( this->inversion % 2 == 0 );
+}
+
 
