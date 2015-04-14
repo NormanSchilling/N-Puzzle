@@ -28,11 +28,6 @@ Puzzle::Puzzle( Puzzle const & cpy )
 
 Puzzle::~Puzzle( void )
 {
-	// for ( int i = 0; i < this->size; ++i )
-	// {
-	// 	delete [] this->puzzle[i];
-	// }
-	// delete [] this->puzzle;
 	return ;
 }
 

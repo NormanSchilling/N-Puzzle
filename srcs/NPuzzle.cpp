@@ -34,7 +34,7 @@ NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab, int heuristic )
 	}
 
 	std::cout << "Nous recherchons la solution a la grande question, veuillez patienter ..." << std::endl;
-
+	this->start = time(nullptr);
 	this->aStar();
 	return ;
 }
@@ -73,7 +73,7 @@ int **									NPuzzle::getPuzzleInit( void ) const
 /*
 ** METHOD
 */
-void									NPuzzle::aStar( )
+void									NPuzzle::aStar()
 {
 	Puzzle *			tmpPuzzle;
 
@@ -84,7 +84,6 @@ void									NPuzzle::aStar( )
 		delete this->sortPuzzles[0];
 		this->sortPuzzles.erase( this->sortPuzzles.begin() );
 		this->findMove( tmpPuzzle );
-		// this->aStar();
 	}
 }
 
@@ -187,18 +186,21 @@ void									NPuzzle::end( Puzzle * solution )
 {
 	std::vector<Puzzle *>		list;
 	std::cout << "Solution trouvee !" << std::endl;
+	std::cout << "Temps d'execution : " << time(nullptr) - this->start << "sec" <<  std::endl;
 	std::cout << this->puzzles.size() << " puzzles closed" << std::endl;
 	std::cout << this->sortPuzzles.size() << " puzzles open" << std::endl;
-	std::cout << this->sortPuzzles.size() + this->puzzles.size() << " puzzles calculee" << std::endl;
+	std::cout << this->sortPuzzles.size() + this->puzzles.size() << " puzzles calcules" << std::endl;
 
-	std::cout << std::endl << "Affichage de la solution dans 2 secondes" << std::endl;
-	sleep( 2 );
 
 	while ( solution )
 	{
 		list.insert( list.begin(), solution );
 		solution = solution->getParent();
 	}
+
+	std::cout << list.size() << " mouvements afin d'atteindre la solution" << std::endl;
+	std::cout << std::endl << "Affichage de la solution dans 2 secondes" << std::endl;
+	sleep( 2 );
 
 	for ( unsigned long i = 0; i < list.size(); ++i )
 	{
@@ -224,7 +226,7 @@ void									NPuzzle::generateSolution( void )
 	for ( int index = 0; index < this->size; ++index )
 	{
 		this->puzzle_end[index] = new int[this->size];
-		for (int tmp_index = 0; tmp_index < this->size; ++tmp_index)
+		for ( int tmp_index = 0; tmp_index < this->size; ++tmp_index )
 		{
 			this->puzzle_end[index][tmp_index] = 0;
 		}
@@ -262,10 +264,10 @@ bool								NPuzzle::isSolvable( void )
 {
 	int		tmp;
 
-	for (int i = 0; i < this->size * this->size - 1; ++i)
+	for ( int i = 0; i < this->size * this->size - 1; ++i )
 	{
 		tmp = this->puzzle_check[i];
-		for (int j = i + 1; j < this->size * this->size - 1; ++j)
+		for ( int j = i + 1; j < this->size * this->size - 1; ++j )
 		{
 			if ( tmp > this->puzzle_check[j] )
 				this->inversion++;
@@ -274,5 +276,3 @@ bool								NPuzzle::isSolvable( void )
 
 	return ( this->inversion % 2 == 0 );
 }
-
-

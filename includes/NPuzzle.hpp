@@ -6,6 +6,7 @@
 #include <vector>
 #include <Puzzle.hpp>
 #include <unistd.h>
+#include <time.h>
 
 class NPuzzle
 {
@@ -48,6 +49,7 @@ class NPuzzle
 		int									heuristic;
 		int									inversion;
 		int									row_zero;
+		time_t								start;
 
 		void								generateMove( Puzzle *puzzle, int x, int y, int x2, int y2 );
 		void								findMove( Puzzle *puzzle );
