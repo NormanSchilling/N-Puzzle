@@ -13,7 +13,6 @@ class Puzzle
 		/*
 		** CONSTRUCT & DESTRUCT
 		*/
-		Puzzle( void );
 		Puzzle( int size, int **puzzle, int **puzzle_end, int rank, Puzzle *parent, int heuristic );
 		Puzzle( Puzzle const & cpy );
 		~Puzzle( void );
@@ -52,6 +51,8 @@ class Puzzle
 		int			**puzzle;
 		int			**puzzle_end;
 		Puzzle		*parent;
+
+		Puzzle( void );
 };
 
 #endif

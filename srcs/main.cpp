@@ -38,14 +38,39 @@ static std::string		parse( std::string line )
 	return ( result.str() );
 }
 
-std::vector<int>	getArray( std::string line )
+std::vector<int>	getArray( std::string line, int size )
 {
 	std::vector<int>		v;
 	int						tmp;
+	std::string				test;
+	std::istringstream		try_len( parse( line ) );
 	std::istringstream		is( parse( line ) );
 
+	tmp = 0;
+	while ( try_len >> test )
+	{
+		tmp++;
+		if ( test.size() > 7 )
+		{
+			std::cout << "Verifiez que votre puzzle soit correct" << std::endl;
+			exit( -1 );
+		}
+	}
+	if ( tmp != size )
+	{
+		std::cout << "Verifiez que votre puzzle soit correct" << std::endl;
+		exit( -1 );
+	}
+
 	while ( is >> tmp )
+	{
+		if ( tmp >= size * size)
+		{
+			std::cout << "Verifiez que votre puzzle soit correct" << std::endl;
+			exit( -1 );
+		}
 		v.push_back( tmp );
+	}
 
 	return ( v );
 }
@@ -104,11 +129,16 @@ int				main( int argc, char *argv[] )
 			if ( m.position(0) != 0 && i == 0 )
 			{
 				file_content << parse( line );
+				if ( file_content.str().size() > 3 )
+				{
+					std::cout << "Puzzle trop grand" << std::endl;
+					return ( -1 );
+				}
 				file_content >> size;
 				i++;
 			}
 			else if ( m.position(0) )
-				tab.push_back( getArray(line) );
+				tab.push_back( getArray(line, size) );
 		}
 		puzzle_file.close();
 		np = new NPuzzle( size, tab, h );

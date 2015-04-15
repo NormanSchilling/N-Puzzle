@@ -6,7 +6,7 @@
 #    By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/03/03 13:29:20 by dsousa            #+#    #+#              #
-#    Updated: 2015/04/13 17:41:15 by dsousa           ###   ########.fr        #
+#    Updated: 2015/04/14 14:34:18 by dsousa           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ export	CC	=	g++
 
 NAME		=	n-puzzle
 
-CFLAGS		= -Wall -Wextra -Werror -pedantic
+CFLAGS		= -Wall -Wextra -Werror -O3
 
 INC			+=	-I includes
 

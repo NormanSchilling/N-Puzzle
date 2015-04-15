@@ -24,17 +24,20 @@ NPuzzle::NPuzzle( int size, std::vector< std::vector<int> > tab, int heuristic )
 		}
 	}
 
+	if ( !this->isValidPuzzle() )
+		this->error( "Verifier que votre puzzle est correct" );
+
 	this->generateSolution( );
-	this->puzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0, NULL, heuristic ) );
 	this->sortPuzzles.push_back( new Puzzle( size, this->puzzle_init, this->puzzle_end, 0, NULL, heuristic ) );
 	if ( !this->isSolvable() )
-	{
-		std::cout << "This puzzle is unsolvable" << std::endl;
-		exit(-1);
-	}
+		this->error( "Ce puzzle est insoluble" );
 
 	std::cout << "Nous recherchons la solution a la grande question, veuillez patienter ..." << std::endl;
 	this->start = time(nullptr);
+
+	if ( this->sortPuzzles[0]->isSolution() )
+		this->end( this->sortPuzzles[0] );
+
 	this->aStar();
 	return ;
 }
@@ -73,6 +76,32 @@ int **									NPuzzle::getPuzzleInit( void ) const
 /*
 ** METHOD
 */
+void									NPuzzle::error( const char *msg ) const
+{
+	std::cout << msg << std::endl;
+	exit(-1);
+}
+
+bool									NPuzzle::isValidPuzzle( void ) const
+{
+	for ( int i = 0; i < this->size; ++i )
+	{
+		for ( int j = 0; j < this->size; ++j )
+		{
+			for ( int y = 0; y < this->size; ++y )
+			{
+				for ( int x = 0; x < this->size; ++x )
+				{
+					if ( ( x != j || y != i ) && this->puzzle_init[i][j] == this->puzzle_init[y][x] )
+						return ( false );
+				}
+			}
+		}
+	}
+
+	return ( true );
+}
+
 void									NPuzzle::aStar()
 {
 	Puzzle *			tmpPuzzle;

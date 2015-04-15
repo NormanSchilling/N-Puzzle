@@ -15,7 +15,6 @@ class NPuzzle
 		/*
 		** CONSTRUCT & DESTRUCT
 		*/
-		NPuzzle( void );
 		NPuzzle( int size, std::vector< std::vector<int> > tab, int heuristic );
 		NPuzzle( NPuzzle const & cpy );
 		~NPuzzle( void );
@@ -55,6 +54,10 @@ class NPuzzle
 		void								findMove( Puzzle *puzzle );
 		void								printStep( Puzzle *puzzle );
 		bool								alreadyExist( Puzzle *puzzle );
+		bool								isValidPuzzle( void ) const;
+		void								error( const char *msg ) const;
+		NPuzzle( void );
+
 
 };
 
