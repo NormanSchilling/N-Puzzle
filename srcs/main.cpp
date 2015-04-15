@@ -10,9 +10,10 @@ static void				ft_usage( void )
 {
 	std::cout << "./npuzzle [file] [nameHeuristic]" << std::endl;
 	std::cout << "| Heuristic ChooseList |" << std::endl;
-	std::cout << "weight" << std::endl;
-	std::cout << "distance" << std::endl;
+	std::cout << "hamming" << std::endl;
+	std::cout << "manhattan" << std::endl;
 	std::cout << "together" << std::endl;
+	std::cout << "tilesout" << std::endl;
 
 	return ;
 }
@@ -75,37 +76,43 @@ std::vector<int>	getArray( std::string line, int size )
 	return ( v );
 }
 
-bool			getHeuristic( std::string heuristic )
+int				getHeuristic( std::string heuristic )
 {
-	if ( heuristic.compare( "weight" ) == 0 )
-		return ( true );
-	else if ( heuristic.compare( "distance" ) == 0 )
-		return ( true );
-	else if ( heuristic.compare( "together" ) == 0 )
-		return ( true );
+	static char name[4][10] =
+	{
+		"hamming",
+		"manhattan",
+		"together",
+		"tilesout",
+	};
 
-	return ( false );
+	for (int i = 0; i < 4; ++i)
+	{
+		if ( heuristic.compare( name[i] ) == 0 )
+			return ( i + 1 );
+	}
+
+	return ( -1 );
 }
 
 int				main( int argc, char *argv[] )
 {
 	int							h;
-	std::string 				heuristic( "weight" );
 
 	if ( argc == 3 )
 	{
-		std::string				heuristic2( argv[2] );
-		heuristic = heuristic2;
+		std::string				heuristic( argv[2] );
+		h = getHeuristic( heuristic );
 	}
-
-	if ( argc < 2  && argc > 3 )
+	else if ( argc == 2 )
+		h = 1;
+	else
 	{
 		ft_usage( );
 		return ( -1 );
 	}
 
-	h = getHeuristic( heuristic );
-	if ( argc == 3 && h == -1 )
+	if ( h == -1 )
 	{
 		ft_usage( );
 		return ( -1 );
@@ -139,6 +146,11 @@ int				main( int argc, char *argv[] )
 			}
 			else if ( m.position(0) )
 				tab.push_back( getArray(line, size) );
+		}
+		if ( tab.size() == 0)
+		{
+			std::cout << "Verifiez votre puzzle" << std::endl;
+			return ( -1 );
 		}
 		puzzle_file.close();
 		np = new NPuzzle( size, tab, h );

@@ -17,7 +17,8 @@ Puzzle::Puzzle( int size, int **puzzle, int **puzzle_end, int rank, Puzzle * par
 		this->weight = this->calculDistance( );
 	else if ( heuristic == 3 )
 		this->weight = this->calculDistance( ) + this->calculWeight( );
-
+	else if ( heuristic == 4 )
+		this->weight = this->calculTilesOut();
 	return ;
 }
 
@@ -105,7 +106,7 @@ int		Puzzle::calculDistanceOneNumber( int a, int b )
 	return ( weightOfNumber );
 }
 
-int		Puzzle::calculDistance()
+int		Puzzle::calculTilesOut()
 {
 	int		weight = 0;
 
@@ -114,6 +115,29 @@ int		Puzzle::calculDistance()
 		for (int j = 0; j < this->size; ++j)
 		{
 			weight += calculDistanceOneNumber( i, j );
+		}
+	}
+	return ( weight );
+}
+
+int		Puzzle::calculDistance()
+{
+	int		weight = 0;
+
+	for (int i = 0; i < this->size; ++i)
+	{
+		for (int j = 0; j < this->size; ++j)
+		{
+			for (int y = 0; y < this->size; ++y)
+			{
+				for (int x = 0; x < this->size; ++x)
+				{
+					if ( this->puzzle_end[y][x] == this->puzzle[i][j] && i != y )
+						weight++;
+					if ( this->puzzle_end[y][x] == this->puzzle[i][j] && j != x )
+						weight++;
+				}
+			}
 		}
 	}
 	return ( weight );

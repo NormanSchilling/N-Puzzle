@@ -28,6 +28,7 @@ class Puzzle
 		*/
 		int		calculWeight();
 		int		calculDistance();
+		int		calculTilesOut();
 		int		calculDistanceOneNumber( int a, int b );
 		bool	isSolution( void );
 
